@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Changing Number Project</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+      padding-top: 50px;
+    }
+    #number {
+      font-size: 80px;
+      margin: 30px;
+      transition: color 0.3s ease;
+    }
+    button {
+      font-size: 20px;
+      margin: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Changing Number Project</h1>
+  <div id="number">0</div>
+
+  <button onclick="increase()">➕ Increase</button>
+  <button onclick="decrease()">➖ Decrease</button>
+  <button onclick="randomize()">🎲 Random</button>
+  <button onclick="reset()">🔄 Reset</button>
+
+  <script>
+    let num = 0;
+
+    function updateDisplay() {
+      const numberElement = document.getElementById('number');
+      numberElement.textContent = num;
+
+      // Change color based on value
+      if (num > 0) {
+        numberElement.style.color = 'green';
+      } else if (num < 0) {
+        numberElement.style.color = 'red';
+      } else {
+        numberElement.style.color = 'black';
+      }
+    }
+
+    function increase() {
+      num++;
+      updateDisplay();
+    }
+
+    function decrease() {
+      num--;
+      updateDisplay();
+    }
+
+    function randomize() {
+      num = Math.floor(Math.random() * 201) - 100; // Random number between -100 and 100
+      updateDisplay();
+    }
+
+    function reset() {
+      num = 0;
+      updateDisplay();
+    }
+
+    updateDisplay(); // Initial display
