@@ -1,0 +1,5 @@
+print("1st")
+print("10th")
+print("19th")
+print("28th")
+print("27th")
