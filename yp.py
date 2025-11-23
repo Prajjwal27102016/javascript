@@ -25,24 +25,17 @@ print("the type casting of age from int to str is", type(str(age)))
 String1= "coding"
 
 print(len(String1))
-Create a program using the string operations.
-Sayantan Mandal.Aug 17, 05:01 PM
-Profile Image
 
 str1="coding"
 
 str2=" is fun"
 
 print(str1+str2)
-Sayantan Mandal.Aug 17, 05:01 PM
-Profile Image
 
 String1[2:]
-Sayantan Mandal.Aug 17, 05:01 PM
-Profile Image
+
 
 String1[-2]
-Sayantan Mandal.Aug 17, 05:01 PM
-Profile Image
+
 
 String1
