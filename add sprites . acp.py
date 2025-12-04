@@ -29,7 +29,7 @@ class ControllableSprite(pygame.sprite.Sprite):
         if keys[pygame.K_DOWN]:
             self.rect.y += self.speed
 
-class StaticSprite(pygame.sprite.Sprite):
+class BouncingBlock(pygame.sprite.Sprite):
     def __init__(self, color, x, y):
         super().__init__()
         self.image = pygame.Surface([50, 50])
@@ -37,11 +37,23 @@ class StaticSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.change_x = 4
+        self.change_y = 4
+
+    def update(self):
+        self.rect.x += self.change_x
+        self.rect.y += self.change_y
+
+        if self.rect.right >= screen_width or self.rect.left <= 0:
+            self.change_x *= -1
+        
+        if self.rect.bottom >= screen_height or self.rect.top <= 0:
+            self.change_y *= -1
 
 all_sprites = pygame.sprite.Group()
 
 player = ControllableSprite((0, 0, 255), 300, 300)
-block = StaticSprite((255, 0, 0), 500, 200)
+block = BouncingBlock((255, 0, 0), 500, 200)
 
 all_sprites.add(player)
 all_sprites.add(block)
@@ -54,7 +66,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    player.update()
+    all_sprites.update()
 
     screen.fill((255, 255, 255))
     all_sprites.draw(screen)
