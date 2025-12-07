@@ -39,7 +39,7 @@ WHITE = pygame.Color('white')
 # Sprite class representing the moving object
 class Sprite(pygame.sprite.Sprite):
    # Constructor method
-   def __init__(self, color, height, width, screen_w, screen_h, speed=2):
+   def __init__(self, color, height, width, screen_w, screen_h, speed=50):
        # Call to the parent class (Sprite) constructor
        super().__init__()
        # Store screen dimensions for boundary checks
@@ -132,7 +132,7 @@ all_sprites_list = pygame.sprite.Group()
 
 
 # Instantiate the sprite, passing screen dimensions and desired speed
-sp1 = Sprite(WHITE, SPRITE_HEIGHT, SPRITE_WIDTH, SCREEN_WIDTH, SCREEN_HEIGHT, speed=3)
+sp1 = Sprite(WHITE, SPRITE_HEIGHT, SPRITE_WIDTH, SCREEN_WIDTH, SCREEN_HEIGHT, speed=100000000000000)
 
 
 # Randomly position the sprite ensuring it's fully on screen
