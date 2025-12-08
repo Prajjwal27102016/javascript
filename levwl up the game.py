@@ -4,7 +4,7 @@ import os # Import os module to handle file paths
 import sys
 # Constants for easier adjustments
 SCREEN_WIDTH, SCREEN_HEIGHT = 500, 400
-MOVEMENT_SPEED = 5
+MOVEMENT_SPEED = 1 // 90 # Adjusted for frame rate
 FONT_SIZE = 72
 
 
