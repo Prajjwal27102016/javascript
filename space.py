@@ -14,6 +14,11 @@ ENEMY_SPEED_Y = 40
 BULLET_SPEED_Y = 10
 COLLISION_DISTANCE = 27
 
+# 
+
+ENEMY_SIZE = 64 
+
+
 # Initialize Pygame
 pygame.init()
 
@@ -45,8 +50,10 @@ enemyY_change = []
 num_of_enemies = 6
 
 for _i in range(num_of_enemies):
-    enemyImg.append(pygame.image.load('images.jpeg'))
-    enemyX.append(random.randint(0, SCREEN_WIDTH - 64))  # 64 is the size of the enemy
+    img = pygame.image.load('images.jpeg')
+    img = pygame.transform.scale(img, (ENEMY_SIZE, ENEMY_SIZE))  # Resize enemy image
+    enemyImg.append(img)
+    enemyX.append(random.randint(0, SCREEN_WIDTH -64))  # 64 is the size of the enemy
     enemyY.append(random.randint(ENEMY_START_Y_MIN, ENEMY_START_Y_MAX))
     enemyX_change.append(ENEMY_SPEED_X)
     enemyY_change.append(ENEMY_SPEED_Y)

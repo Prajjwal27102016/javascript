@@ -1,85 +1,198 @@
-import pygame
+import math
 import random
+import pygame
 
+# Constants
 SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
+SCREEN_HEIGHT = 500
+PLAYER_START_X = 370
+PLAYER_START_Y = 380
+ENEMY_START_Y_MIN = 50
+ENEMY_START_Y_MAX = 150
+ENEMY_SPEED_X = 4
+ENEMY_SPEED_Y = 40
+BULLET_SPEED_Y = 10
+COLLISION_DISTANCE = 27
+ENEMY_SIZE = 64 
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface([50, 50])
-        self.image.fill(GREEN)
-        self.rect = self.image.get_rect()
-        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-    def update(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.rect.x -= 5
-        if keys[pygame.K_RIGHT]:
-            self.rect.x += 5
-        if keys[pygame.K_UP]:
-            self.rect.y -= 5
-        if keys[pygame.K_DOWN]:
-            self.rect.y += 5
-
-        if self.rect.left < 0: self.rect.left = 0
-        if self.rect.right > SCREEN_WIDTH: self.rect.right = SCREEN_WIDTH
-        if self.rect.top < 0: self.rect.top = 0
-        if self.rect.bottom > SCREEN_HEIGHT: self.rect.bottom = SCREEN_HEIGHT
-
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface([30, 30])
-        self.image.fill(RED)
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randrange(0, SCREEN_WIDTH - self.rect.width)
-        self.rect.y = random.randrange(0, SCREEN_HEIGHT - self.rect.height)
-
+# Initialize Pygame
 pygame.init()
+
+# 🎶 Initialize the mixer for sound
+pygame.mixer.init()
+
+# Create the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Sprite Collision Game")
-clock = pygame.time.Clock()
-font = pygame.font.Font(None, 36)
 
-all_sprites = pygame.sprite.Group()
-enemy_list = pygame.sprite.Group()
+# Background
+# Make sure the background image file exists!
+background = pygame.image.load('backgroundspace.png')
 
-player = Player()
-all_sprites.add(player)
+# Resize the background image to fit the screen dimensions
+background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-for i in range(7):
-    enemy = Enemy()
-    all_sprites.add(enemy)
-    enemy_list.add(enemy)
+# Caption and Icon
+pygame.display.set_caption("Space Invader")
+icon = pygame.image.load('ufo.png')
+pygame.display.set_icon(icon)
 
-score = 0
+# --- Sound Setup ---
+
+# Background Music
+# Replace 'background_music.wav' with your actual file path
+try:
+    pygame.mixer.music.load('background_music.wav')
+    # Play music in an infinite loop (-1)
+    pygame.mixer.music.play(-1)
+except pygame.error as e:
+    print(f"Could not load background music: {e}")
+
+# Sound Effects
+# Load the sound files
+# Replace filenames with your actual file paths
+try:
+    bullet_sound = pygame.mixer.Sound('laser_sound.wav')
+except pygame.error as e:
+    print(f"Could not load bullet sound: {e}")
+
+try:
+    explosion_sound = pygame.mixer.Sound('explosion_sound.wav')
+except pygame.error as e:
+    print(f"Could not load explosion sound: {e}")
+
+
+# Player
+playerImg = pygame.image.load('player.png')
+playerX = PLAYER_START_X
+playerY = PLAYER_START_Y
+playerX_change = 0
+
+# Enemy
+enemyImg = []
+enemyX = []
+enemyY = []
+enemyX_change = []
+enemyY_change = []
+num_of_enemies = 6
+
+for _i in range(num_of_enemies):
+    img = pygame.image.load('images.jpeg')
+    img = pygame.transform.scale(img, (ENEMY_SIZE, ENEMY_SIZE))  # Resize enemy image
+    enemyImg.append(img)
+    enemyX.append(random.randint(0, SCREEN_WIDTH -64))  # 64 is the size of the enemy
+    enemyY.append(random.randint(ENEMY_START_Y_MIN, ENEMY_START_Y_MAX))
+    enemyX_change.append(ENEMY_SPEED_X)
+    enemyY_change.append(ENEMY_SPEED_Y)
+
+# Bullet
+bulletImg = pygame.image.load('bullet.png')
+bulletX = 0
+bulletY = PLAYER_START_Y
+bulletX_change = 0
+bulletY_change = BULLET_SPEED_Y
+bullet_state = "ready"
+
+# Score
+score_value = 0
+font = pygame.font.Font('freesansbold.ttf', 32)
+textX = 10
+textY = 10
+
+# Game Over Text
+over_font = pygame.font.Font('freesansbold.ttf', 64)
+
+def show_score(x, y):
+    # Display the current score on the screen.
+    score = font.render("Score : " + str(score_value), True, (255, 255, 255))
+    screen.blit(score, (x, y))
+
+def game_over_text():
+    # Display the game over text
+    over_text = over_font.render("GAME OVER", True, (255, 255, 255))
+    screen.blit(over_text, (200, 250))
+
+def player(x, y):
+    # Draw the player on the screen
+    screen.blit(playerImg, (x, y))
+
+def enemy(x, y, i):
+    # Draw an enemy on the screen
+    screen.blit(enemyImg[i], (x, y))
+
+def fire_bullet(x, y):
+    # Fire a bullet from the player's position
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(bulletImg, (x + 16, y + 10))
+
+def isCollision(enemyX, enemyY, bulletX, bulletY):
+    # Check if there is a collision between the enemy and a bullet
+    distance = math.sqrt((enemyX - bulletX) ** 2 + (enemyY - bulletY) ** 2)
+    return distance < COLLISION_DISTANCE
+
+# Game loop
 running = True
-
 while running:
+    # Set the background image (this was already present, but is crucial)
+    screen.fill((0, 0, 0))
+    screen.blit(background, (0, 0))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                playerX_change = -5
+            if event.key == pygame.K_RIGHT:
+                playerX_change = 5
+            # 🔊 Play bullet sound when space is pressed and bullet is ready
+            if event.key == pygame.K_SPACE and bullet_state == "ready":
+                bullet_sound.play() # Play the sound effect
+                bulletX = playerX
+                fire_bullet(bulletX, bulletY)
+        if event.type == pygame.KEYUP and event.key in [pygame.K_LEFT, pygame.K_RIGHT]:
+            playerX_change = 0
 
-    all_sprites.update()
+    # Player Movement
+    playerX += playerX_change
+    playerX = max(0, min(playerX, SCREEN_WIDTH - 64))  # 64 is the size of the player
 
-    hit_list = pygame.sprite.spritecollide(player, enemy_list, True)
-    
-    for hit in hit_list:
-        score += 1
+    # Enemy Movement
+    for i in range(num_of_enemies):
+        if enemyY[i] > 340:  # Game Over Condition
+            for j in range(num_of_enemies):
+                enemyY[j] = 2000
+            game_over_text()
+            break
 
-    screen.fill(WHITE)
-    all_sprites.draw(screen)
+        enemyX[i] += enemyX_change[i]
+        if enemyX[i] <= 0 or enemyX[i] >= SCREEN_WIDTH - 64:
+            enemyX_change[i] *= -1
+            enemyY[i] += enemyY_change[i]
 
-    score_text = font.render(f"Score: {score}", True, BLACK)
-    screen.blit(score_text, (10, 10))
+        # Collision Check
+        if isCollision(enemyX[i], enemyY[i], bulletX, bulletY):
+            # 💥 Play explosion sound upon collision
+            explosion_sound.play()
+            
+            bulletY = PLAYER_START_Y
+            bullet_state = "ready"
+            score_value += 1
+            # Reset enemy position
+            enemyX[i] = random.randint(0, SCREEN_WIDTH - 64)
+            enemyY[i] = random.randint(ENEMY_START_Y_MIN, ENEMY_START_Y_MAX)
 
-    pygame.display.flip()
-    clock.tick(60)
+        enemy(enemyX[i], enemyY[i], i)
 
-pygame.quit()
+    # Bullet Movement
+    if bulletY <= 0:
+        bulletY = PLAYER_START_Y
+        bullet_state = "ready"
+    elif bullet_state == "fire":
+        fire_bullet(bulletX, bulletY)
+        bulletY -= bulletY_change
+
+    player(playerX, playerY)
+    show_score(textX, textY)
+    pygame.display.update()
