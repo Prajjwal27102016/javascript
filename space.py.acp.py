@@ -27,14 +27,14 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Background
 # Make sure the background image file exists!
-background = pygame.image.load('backgroundspace.png')
+background = pygame.image.load('i.2.jpg')
 
 # Resize the background image to fit the screen dimensions
 background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Caption and Icon
 pygame.display.set_caption("Space Invader")
-icon = pygame.image.load('ufo.png')
+icon = pygame.image.load('choclate-removebg-preview.png')
 pygame.display.set_icon(icon)
 
 # --- Sound Setup ---
@@ -42,7 +42,7 @@ pygame.display.set_icon(icon)
 # Background Music
 # Replace 'background_music.wav' with your actual file path
 try:
-    pygame.mixer.music.load('background_music.wav')
+    pygame.mixer.music.load('background music.wav')
     # Play music in an infinite loop (-1)
     pygame.mixer.music.play(-1)
 except pygame.error as e:
@@ -52,18 +52,18 @@ except pygame.error as e:
 # Load the sound files
 # Replace filenames with your actual file paths
 try:
-    bullet_sound = pygame.mixer.Sound('laser_sound.wav')
+    bullet_sound = pygame.mixer.Sound('')
 except pygame.error as e:
     print(f"Could not load bullet sound: {e}")
 
 try:
-    explosion_sound = pygame.mixer.Sound('explosion_sound.wav')
+    explosion_sound = pygame.mixer.Sound('explosion sound.wav')
 except pygame.error as e:
     print(f"Could not load explosion sound: {e}")
 
 
 # Player
-playerImg = pygame.image.load('player.png')
+playerImg = pygame.image.load('astropro.jpeg')
 playerX = PLAYER_START_X
 playerY = PLAYER_START_Y
 playerX_change = 0
@@ -77,7 +77,7 @@ enemyY_change = []
 num_of_enemies = 6
 
 for _i in range(num_of_enemies):
-    img = pygame.image.load('images.jpeg')
+    img = pygame.image.load('enemy.png')
     img = pygame.transform.scale(img, (ENEMY_SIZE, ENEMY_SIZE))  # Resize enemy image
     enemyImg.append(img)
     enemyX.append(random.randint(0, SCREEN_WIDTH -64))  # 64 is the size of the enemy
@@ -86,7 +86,7 @@ for _i in range(num_of_enemies):
     enemyY_change.append(ENEMY_SPEED_Y)
 
 # Bullet
-bulletImg = pygame.image.load('bullet.png')
+bulletImg = pygame.image.load('gun.bullet2.png')
 bulletX = 0
 bulletY = PLAYER_START_Y
 bulletX_change = 0
