@@ -27,14 +27,14 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Background
 # Make sure the background image file exists!
-background = pygame.image.load('i.2.jpg')
+background = pygame.image.load('i2.jpg')
 
 # Resize the background image to fit the screen dimensions
 background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Caption and Icon
 pygame.display.set_caption("Space Invader")
-icon = pygame.image.load('choclate-removebg-preview.png')
+icon = pygame.image.load('choclateremovebgpreview.png')
 pygame.display.set_icon(icon)
 
 # --- Sound Setup ---
@@ -42,7 +42,7 @@ pygame.display.set_icon(icon)
 # Background Music
 # Replace 'background_music.wav' with your actual file path
 try:
-    pygame.mixer.music.load('background music.wav')
+    pygame.mixer.music.load('backgroundmusic.wav')
     # Play music in an infinite loop (-1)
     pygame.mixer.music.play(-1)
 except pygame.error as e:
@@ -57,7 +57,7 @@ except pygame.error as e:
     print(f"Could not load bullet sound: {e}")
 
 try:
-    explosion_sound = pygame.mixer.Sound('explosion sound.wav')
+    explosion_sound = pygame.mixer.Sound('explosionsound.wav')
 except pygame.error as e:
     print(f"Could not load explosion sound: {e}")
 
