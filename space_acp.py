@@ -1,6 +1,7 @@
 import math
 import random
 import pygame
+import os
 
 # Constants
 SCREEN_WIDTH = 800
@@ -10,10 +11,19 @@ PLAYER_START_Y = 380
 ENEMY_START_Y_MIN = 50
 ENEMY_START_Y_MAX = 150
 ENEMY_SPEED_X = 4
-ENEMY_SPEED_Y = 40
-BULLET_SPEED_Y = 10
+ENEMY_SPEED_Y = 4
+BULLET_SPEED_Y =20
 COLLISION_DISTANCE = 27
-ENEMY_SIZE = 64 
+ENEMY_SIZE = 50
+BULLET_SIZE = 20
+
+# Runtime-adjustable settings (can be changed while the game runs)
+PLAYER_SPEED = 5          # used for left/right movement
+enemy_speed = 4  # initial enemy horizontal speed
+enemy_size = ENEMY_SIZE
+bullet_size = BULLET_SIZE
+bullet_speed = BULLET_SPEED_Y
+collision_distance = int(enemy_size * 0.42)
 
 
 # Initialize Pygame
@@ -25,45 +35,68 @@ pygame.mixer.init()
 # Create the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# Background
-# Make sure the background image file exists!
-background = pygame.image.load('i2.jpg')
+# Helper to load images safely and provide a placeholder if missing
+def load_image(path, size=None):
+    if os.path.isfile(path):
+        try:
+            img = pygame.image.load(path)
+            if size:
+                img = pygame.transform.scale(img, size)
+            return img
+        except Exception as e:
+            print(f"Could not load image '{path}': {e}")
+    else:
+        print(f"Image file not found: {path}")
+    # Create a visible placeholder surface for missing images
+    w, h = size if size else (64, 64)
+    placeholder = pygame.Surface((w, h))
+    placeholder.fill((255, 0, 255))  # magenta indicates missing asset
+    return placeholder
 
-# Resize the background image to fit the screen dimensions
-background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+# Background
+background = load_image('i2.jpg', (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Caption and Icon
 pygame.display.set_caption("Space Invader")
-icon = pygame.image.load('choclateremovebgpreview.png')
+icon = load_image('choclateremovebgpreview.png')
 pygame.display.set_icon(icon)
 
 # --- Sound Setup ---
 
 # Background Music
-# Replace 'background_music.wav' with your actual file path
-try:
-    pygame.mixer.music.load('backgroundmusic.wav')
-    # Play music in an infinite loop (-1)
-    pygame.mixer.music.play(-1)
-except pygame.error as e:
-    print(f"Could not load background music: {e}")
+bg_music = 'backgroundmusic.wav'
+if os.path.isfile(bg_music):
+    try:
+        pygame.mixer.music.load(bg_music)
+        pygame.mixer.music.play(-1)
+    except Exception as e:
+        print(f"Could not load background music: {e}")
+else:
+    print(f"Background music file not found: {bg_music}")
 
-# Sound Effects
-# Load the sound files
-# Replace filenames with your actual file paths
-try:
-    bullet_sound = pygame.mixer.Sound('')
-except pygame.error as e:
-    print(f"Could not load bullet sound: {e}")
+# Sound Effects - safe loading with fallback
+class _DummySound:
+    def play(self):
+        pass
 
-try:
-    explosion_sound = pygame.mixer.Sound('explosionsound.wav')
-except pygame.error as e:
-    print(f"Could not load explosion sound: {e}")
+def load_sound(filename):
+    if os.path.isfile(filename):
+        try:
+            return pygame.mixer.Sound(filename)
+        except Exception as e:
+            print(f"Could not load sound '{filename}': {e}")
+            return _DummySound()
+    else:
+        print(f"Sound file not found: {filename}")
+        return _DummySound()
+
+# Update these filenames to match your files in the project directory
+bullet_sound = load_sound('bullet.wav')
+explosion_sound = load_sound('explosionsound.wav')
 
 
 # Player
-playerImg = pygame.image.load('astropro.jpeg')
+playerImg = load_image('astropro.jpeg')
 playerX = PLAYER_START_X
 playerY = PLAYER_START_Y
 playerX_change = 0
@@ -76,17 +109,25 @@ enemyX_change = []
 enemyY_change = []
 num_of_enemies = 6
 
+# Load base enemy image and create scaled copies so we can resize at runtime
+enemy_base_img = load_image('enemy.png')
 for _i in range(num_of_enemies):
-    img = pygame.image.load('enemy.png')
-    img = pygame.transform.scale(img, (ENEMY_SIZE, ENEMY_SIZE))  # Resize enemy image
+    img = pygame.transform.scale(enemy_base_img, (enemy_size, enemy_size))
     enemyImg.append(img)
-    enemyX.append(random.randint(0, SCREEN_WIDTH -64))  # 64 is the size of the enemy
+    enemyX.append(random.randint(0, SCREEN_WIDTH - enemy_size))
     enemyY.append(random.randint(ENEMY_START_Y_MIN, ENEMY_START_Y_MAX))
-    enemyX_change.append(ENEMY_SPEED_X)
+    # Give some enemies negative direction to spread them out
+    enemyX_change.append(enemy_speed if random.choice([True, False]) else -enemy_speed)
     enemyY_change.append(ENEMY_SPEED_Y)
 
+# Helper to apply current enemy_speed to all enemies (preserves direction)
+def apply_enemy_speed():
+    for k in range(len(enemyX_change)):
+        sign = 1 if enemyX_change[k] >= 0 else -1
+        enemyX_change[k] = sign * enemy_speed
+
 # Bullet
-bulletImg = pygame.image.load('gun.bullet2.png')
+bulletImg = load_image('gun.bullet2.png', (bullet_size, bullet_size))
 bulletX = 0
 bulletY = PLAYER_START_Y
 bulletX_change = 0
@@ -112,6 +153,20 @@ def game_over_text():
     over_text = over_font.render("GAME OVER", True, (255, 255, 255))
     screen.blit(over_text, (200, 250))
 
+def show_debug():
+    # Show current adjustable settings and key help
+    lines = [
+        f"Player speed (q/a): {PLAYER_SPEED}",
+        f"Enemy speed (w/s): {enemy_speed}",
+        f"Enemy size (e/d): {enemy_size}",
+        f"Bullet speed (r/f): {bullet_speed}",
+        f"Bullet size: {bullet_size}",
+        "Keys: q/a player, w/s enemy, e/d size, r/f bullet"
+    ]
+    for i, line in enumerate(lines):
+        txt = font.render(line, True, (255, 255, 0))
+        screen.blit(txt, (10, SCREEN_HEIGHT - (len(lines) - i) * 20 - 10))
+
 def player(x, y):
     # Draw the player on the screen
     screen.blit(playerImg, (x, y))
@@ -129,7 +184,7 @@ def fire_bullet(x, y):
 def isCollision(enemyX, enemyY, bulletX, bulletY):
     # Check if there is a collision between the enemy and a bullet
     distance = math.sqrt((enemyX - bulletX) ** 2 + (enemyY - bulletY) ** 2)
-    return distance < COLLISION_DISTANCE
+    return distance < collision_distance
 
 # Game loop
 running = True
@@ -143,14 +198,46 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                playerX_change = -5
+                playerX_change = -PLAYER_SPEED
             if event.key == pygame.K_RIGHT:
-                playerX_change = 5
+                playerX_change = PLAYER_SPEED
             # 🔊 Play bullet sound when space is pressed and bullet is ready
             if event.key == pygame.K_SPACE and bullet_state == "ready":
                 bullet_sound.play() # Play the sound effect
                 bulletX = playerX
                 fire_bullet(bulletX, bulletY)
+
+            # Runtime controls (press keys during the game):
+            if event.key == pygame.K_q:  # Increase player speed
+                PLAYER_SPEED += 1
+            if event.key == pygame.K_a:  # Decrease player speed
+                PLAYER_SPEED = max(1, PLAYER_SPEED - 1)
+
+            if event.key == pygame.K_w:  # Increase enemy speed
+                enemy_speed += 1
+                apply_enemy_speed()
+            if event.key == pygame.K_s:  # Decrease enemy speed
+                enemy_speed = max(1, enemy_speed - 1)
+                apply_enemy_speed()
+            if event.key == pygame.K_z:  # Re-apply current enemy speed to all enemies
+                apply_enemy_speed()
+
+            if event.key == pygame.K_e:  # Increase enemy size
+                enemy_size += 8
+                collision_distance = int(enemy_size * 0.42)
+                for k in range(len(enemyImg)):
+                    enemyImg[k] = pygame.transform.scale(enemy_base_img, (enemy_size, enemy_size))
+            if event.key == pygame.K_d:  # Decrease enemy size
+                enemy_size = max(16, enemy_size - 8)
+                collision_distance = int(enemy_size * 0.42)
+                for k in range(len(enemyImg)):
+                    enemyImg[k] = pygame.transform.scale(enemy_base_img, (enemy_size, enemy_size))
+
+            if event.key == pygame.K_r:  # Increase bullet speed
+                bullet_speed += 1
+            if event.key == pygame.K_f:  # Decrease bullet speed
+                bullet_speed = max(1, bullet_speed - 1)
+
         if event.type == pygame.KEYUP and event.key in [pygame.K_LEFT, pygame.K_RIGHT]:
             playerX_change = 0
 
@@ -167,7 +254,7 @@ while running:
             break
 
         enemyX[i] += enemyX_change[i]
-        if enemyX[i] <= 0 or enemyX[i] >= SCREEN_WIDTH - 64:
+        if enemyX[i] <= 0 or enemyX[i] >= SCREEN_WIDTH - enemy_size:
             enemyX_change[i] *= -1
             enemyY[i] += enemyY_change[i]
 
@@ -191,7 +278,7 @@ while running:
         bullet_state = "ready"
     elif bullet_state == "fire":
         fire_bullet(bulletX, bulletY)
-        bulletY -= bulletY_change
+        bulletY -= bullet_speed
 
     player(playerX, playerY)
     show_score(textX, textY)
