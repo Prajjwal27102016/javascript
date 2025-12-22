@@ -10,8 +10,8 @@ PLAYER_START_X = 370
 PLAYER_START_Y = 380
 ENEMY_START_Y_MIN = 50
 ENEMY_START_Y_MAX = 150
-ENEMY_SPEED_X = 4
-ENEMY_SPEED_Y = 4
+ENEMY_SPEED_X = 1
+ENEMY_SPEED_Y = 1
 BULLET_SPEED_Y =20
 COLLISION_DISTANCE = 27
 ENEMY_SIZE = 50
@@ -96,7 +96,7 @@ explosion_sound = load_sound('explosionsound.wav')
 
 
 # Player
-playerImg = load_image('astropro.jpeg')
+playerImg = load_image('astroproremovebgpreview.png.jpg')
 playerX = PLAYER_START_X
 playerY = PLAYER_START_Y
 playerX_change = 0
