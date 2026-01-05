@@ -7,7 +7,7 @@ class RestaurantOrderManagement:
        self.root = root
        self.root.title("Restaurant Management App")
        #there are two dictionaries, one for the menu items-price and one for the menu items-quantity
-       # Menu items with prices in rupees
+       # Menu items with prices in $
        self.menu_items = {
            "FRIES MEAL": 2,
            "LUNCH MEAL": 2,
@@ -38,7 +38,7 @@ class RestaurantOrderManagement:
        # Create menu items with quantity fields
        for i, (item, price) in enumerate(self.menu_items.items(), start=1):
            ttk.Label(frame,
-                    text=f"{item} (rupees{price}):",
+                    text=f"{item} (${price}):",
                     font=("Arial", 12)).grid(row=i, column=0, padx=10, pady=5, sticky="w")
 
 
@@ -74,11 +74,11 @@ class RestaurantOrderManagement:
            if quantity > 0:
                cost = quantity * price
                total_cost += cost
-               order_summary += f"{item}: {quantity} x rupees{price} = rupees{cost:.2f}\n"
+               order_summary += f"{item}: {quantity} x ${price} = ${cost:.2f}\n"
 
 
        if total_cost > 0:
-           order_summary += f"\nTotal Cost: rupees{total_cost:.2f}"
+           order_summary += f"\nTotal Cost: ${total_cost:.2f}"
            messagebox.showinfo("Order Placed", order_summary)
        else:
            messagebox.showerror("Error", "Please order at least one item.")
