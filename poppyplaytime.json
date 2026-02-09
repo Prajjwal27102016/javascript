@@ -1,0 +1,11 @@
+{
+    "theme": "PoppyPlaytime",
+    "colors": {
+        "poppy_red": "hsl(358, 78%, 29%)",
+        "huggy_blue": "hsl(208, 50%, 49%)",
+        "grabpack_yellow": "hsl(42, 98%, 53%)",
+        "factory_dark": "hsl(220, 3%, 9%)",
+        "kissy_pink": "hsl(337, 79%, 76%)",
+        "hazard_gold": "hsl(51, 100%, 50%)"
+    }
+}

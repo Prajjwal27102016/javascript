@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mario Animation</title>
+
+    <style>
+        body {
+
+            background-color: rgb(29, 136, 179);
+
+            margin: 0;
+
+            overflow: hidden;
+
+        }
+
+        .road {
+
+            width: 100%;
+
+            height: 100px;
+
+            background-color: rgb(84, 84, 84);
+
+            position: absolute;
+
+            bottom: 0;
+
+        }
+
+        .mario {
+
+            width: 70px;
+
+            position: absolute;
+
+            bottom: 100px;
+
+            animation: moveMario 3s infinite;
+
+        }
+
+        @keyframes moveMario {
+
+            from {
+
+                left: 0;
+
+            }
+
+            to {
+
+                left: 100%;
+
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="road"></div>
+
+    <img src="14-148615_mario-png-high-quality-image-super-mario-run-removebg-preview.png" alt="Mario" class="mario">
+
+
+
+    <audio autoplay controls>
+
+        <source src="mario.mp3" type="audio/mp3">
+
+    </audio>
+</body>
+
+</html>
