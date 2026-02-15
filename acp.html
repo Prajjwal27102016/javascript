@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Project</title>
+</head>
+
+<body>
+
+    <div id="output"></div>
+
+    <script>
+        const display = document.getElementById('output');
+
+        const now = new Date();
+        display.innerHTML += "<h2>Date</h2>" + now.toDateString() + "<br>";
+
+        display.innerHTML += "<h2>Random Set</h2>";
+        for (let i = 0; i < 5; i++) {
+            let num = Math.floor(Math.random() * 100) + 1;
+            display.innerHTML += "Number " + (i + 1) + ": " + num + "<br>";
+        }
+
+        let raw = Math.random() * 100;
+        let rounded = Math.round(raw);
+        display.innerHTML += "<h2>Rounded Random</h2>" + rounded;
+    </script>
+
+</body>
+
+</html>
