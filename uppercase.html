@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uppercase Converter</title>
+</head>
+<body>
+    <h1>Uppercase Converter</h1>
+    <input type="text" id="inputText" placeholder="Enter a word or sentence" oninput="convertToUppercase()">
+    <p id="result"></p>
+    <script>
+        function convertToUppercase() {
+            const input = document.getElementById('inputText').value;
+            const uppercase = input.toUpperCase();
+            document.getElementById('result').textContent = uppercase;
+        }
+    
+    </script>
+</body>
+</html>
