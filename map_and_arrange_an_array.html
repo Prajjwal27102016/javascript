@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>original array</p>
+    <p id="product_value"></p>
+
+    <p>multiplied with 20 (click buttons to sort):</p>
+    <p id="result"></p>
+
+    <button onclick="ascending()">Ascending</button>
+    <button onclick="descending()">Descending</button>
+
+    <script>
+        var array1 = [29, 5, 18, 92];
+
+        function myFunction(num) {
+            return num * 20;
+        }
+
+        var array2 = array1.map(myFunction);
+
+        document.getElementById("product_value").innerHTML = array1;
+        document.getElementById("result").innerHTML = array2;
+
+        function ascending() {
+            array2.sort(function (a, b) {
+                return a - b;
+            });
+            document.getElementById("result").innerHTML = array2;
+        }
+
+        function descending() {
+            array2.sort(function (a, b) {
+                return b - a;
+            });
+            document.getElementById("result").innerHTML = array2;
+        }
+
+    </script>
+</body>
+
+</html>
