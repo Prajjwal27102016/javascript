@@ -1,4 +1,11 @@
-const arr = [1, 2, 3, 4, 5];
-for (let i = arr.length - 1; i >= 0; i--) {
-    console.log(arr[i]);
+function printSeries() {
+    let a = 0, b = 1, count = 0;
+    while (count < 10) {
+        console.log(a);
+        let temp = a;
+        a = b;
+        b = temp + b;
+        count++;
+    }
 }
+console.log(printSeries());
