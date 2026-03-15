@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <style>
+        body {
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial;
+        }
+
+        .calculator {
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            width: 260px;
+        }
+
+        .calculator h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #result {
+            width: 100%;
+            height: 50px;
+            font-size: 22px;
+            text-align: right;
+            padding: 10px;
+            border: none;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        button {
+            height: 50px;
+            font-size: 18px;
+            background: #2f3a3a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .operator {
+            background: #3c4a4a;
+        }
+
+        .clear {
+            grid-column: span 4;
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="calculator">
+        <h2>Calculator</h2>
+        <input type="text" id="result" placeholder="Result" readonly>
+
+
+        <div class="buttons">
+            <button onclick="setScreenValue('1')">1</button>
+            <button onclick="setScreenValue('2')">2</button>
+            <button onclick="setScreenValue('3')">3</button>
+            <button class="operator" onclick="setScreenValue('+')">+</button>
+
+
+            <button onclick="setScreenValue('4')">4</button>
+            <button onclick="setScreenValue('5')">5</button>
+            <button onclick="setScreenValue('6')">6</button>
+            <button class="operator" onclick="setScreenValue('-')">-</button>
+
+
+            <button onclick="setScreenValue('7')">7</button>
+            <button onclick="setScreenValue('8')">8</button>
+            <button onclick="setScreenValue('9')">9</button>
+            <button class="operator" onclick="setScreenValue('*')">x</button>
+
+
+            <button onclick="setScreenValue('%')">%</button>
+            <button onclick="setScreenValue('0')">0</button>
+            <button onclick="setScreenValue('.')">.</button>
+            <button class="operator" onclick="setScreenValue('/')">/</button>
+
+
+            <button class="operator" onclick="calculateResult()">=</button>
+            <button class="clear" onclick="clearScreen()">CLEAR</button>
+        </div>
+    </div>
+
+
+    <script>
+        /* Clears the calculator display */
+        function clearScreen() {
+            document.getElementById("result").value = "";
+        }
+
+
+        /* Appends the clicked button's value to the display */
+        function setScreenValue(value) {
+            document.getElementById("result").value += value;
+        }
+
+
+        /* Calculates and displays the result */
+        function calculateResult() {
+            const resultElement = document.getElementById("result");
+            const expression = resultElement.value.trim();
+
+
+            if (expression === '') {
+                resultElement.value = 'Enter expression';
+                return;
+            }
+
+
+            try {
+                // eval evaluates the math expression string
+                resultElement.value = eval(expression);
+            } catch (e) {
+                resultElement.value = 'Invalid expression';
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>

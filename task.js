@@ -1,11 +1,10 @@
-function printSeries() {
-    let a = 0, b = 1, count = 0;
-    while (count < 10) {
-        console.log(a);
-        let temp = a;
-        a = b;
-        b = temp + b;
-        count++;
+function divisible_5(num) {
+    if (num % 5 === 0) {
+        return num + ' is divisible with 5';
+    } else {
+        return num + ' is not divisible with 5';
     }
 }
-console.log(printSeries());
+
+console.log(divisible_5(10));
+console.log(divisible_5(12)); 
