@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Age Validation Project</title>
+</head>
+
+<body>
+
+    <h2>Login Form</h2>
+
+    <label>Enter Name:</label><br>
+    <input type="text" id="nameInput"><br><br>
+
+    <label>Enter Age:</label><br>
+    <input type="number" id="ageInput"><br><br>
+
+    <button onclick="checkAge()">Login</button>
+
+    <p id="result"></p>
+
+    <script>
+        function checkAge() {
+           
+            let name = document.getElementById("nameInput").value;
+            let age = document.getElementById("ageInput").value;
+            let display = document.getElementById("result");
+
+            
+            if (age >= 18) {
+                display.innerText = "Access Granted. Welcome, " + name + "!";
+            } else {
+                display.innerText = "Access Denied. You must be 18 or older.";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
