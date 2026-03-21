@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(54, 215, 223);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: medium;
+            text-decoration: underline;
+            color: blanchedalmond;
+            text-decoration: double;
+            text-shadow: rgb(144, 0, 255) 2px 2px 4px;
+            text-wrap: initial;
+        }
+    </style>
+</head>
+<body>
+    
+        <h1>Area Calculator</h1>
+    
+        <script>
+
+            var choice = prompt("Choose a shape to calculate area:\n1. Square\n2. Rectangle \n3. Triangle");
+
+            var area;
+
+            if (choice === "1") {
+
+                var side = parseFloat(prompt("Enter the length of a side of the square:")); //parseFloat converts string to decimal number
+
+                area = side * side;
+
+                alert("The area of the square is: " + area);
+
+            } else if (choice === "2") {
+
+                var length = parseFloat(prompt("Enter the length of the rectangle:"));
+
+                var width = parseFloat(prompt("Enter the width of the rectangle:"));
+
+                area = length * width;
+
+                alert("The area of the rectangle is: " + area);
+
+            }
+
+            else if (choice === "3") {
+
+                var base = parseFloat(prompt("Enter the base of the triangle:"));
+
+                var height = parseFloat(prompt("Enter the height of the triangle:"));
+
+                area = 0.5 * base * height;
+
+                alert("The area of the Triangle is: " + area.toFixed(2));
+
+            }
+
+            else {
+
+                alert("Invalid choice. Please refresh and try again.");
+
+            }
+
+        </script>
+    
+ 
+</body>
+</html>
