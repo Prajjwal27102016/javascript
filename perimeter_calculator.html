@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perimeter Calculator</title>
+    <style>
+        body {
+            background-color: rgb(54, 215, 223);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: medium;
+            color: blanchedalmond;
+            text-shadow: rgb(144, 0, 255) 2px 2px 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Perimeter Calculator</h1>
+
+    <script>
+        var choice = prompt("Choose a shape to calculate perimeter:\n1. Square\n2. Rectangle \n3. Triangle\n4. Circle");
+
+        var perimeter;
+
+        if (choice === "1") {
+            var side = parseFloat(prompt("Enter the side length of the square:"));
+            perimeter = 4 * side;
+            alert("The perimeter of the square is: " + perimeter);
+
+        } else if (choice === "2") {
+            var length = parseFloat(prompt("Enter the length of the rectangle:"));
+            var width = parseFloat(prompt("Enter the width of the rectangle:"));
+            perimeter = 2 * (length + width);
+            alert("The perimeter of the rectangle is: " + perimeter);
+
+        } else if (choice === "3") {
+            var a = parseFloat(prompt("Enter length of side A:"));
+            var b = parseFloat(prompt("Enter length of side B:"));
+            var c = parseFloat(prompt("Enter length of side C:"));
+            perimeter = a + b + c;
+            alert("The perimeter of the triangle is: " + perimeter);
+
+        } else if (choice === "4") {
+            var radius = parseFloat(prompt("Enter the radius of the circle:"));
+            perimeter = 2 * Math.PI * radius;
+            alert("The circumference (perimeter) of the circle is: " + perimeter.toFixed(2));
+
+        } else {
+            alert("Invalid choice. Please refresh and try again.");
+        }
+    </script>
+
+</body>
+
+</html>
