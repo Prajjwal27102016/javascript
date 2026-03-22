@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Color Switcher</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            transition: background-color 0.4s ease;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.427);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #button-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .color-btn {
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Select a Color</h1>
+        <div id="button-grid"></div>
+    </div>
+
+    <script>
+        const colors = [
+            "#FF0000", "#FF4500", "#FF8C00", "#FFD700", "#ADFF2F",
+            "#00FF00", "#32CD32", "#00FA9A", "#00FFFF", "#00BFFF",
+            "#0000FF", "#4B0082", "#8A2BE2", "#9400D3", "#FF00FF",
+            "#FF1493", "#C71585", "#8B4513", "#808080", "#000000"
+        ];
+
+        const grid = document.getElementById("button-grid");
+
+        colors.forEach(color => {
+            const btn = document.createElement("button");
+            btn.className = "color-btn";
+            btn.style.backgroundColor = color;
+            btn.onclick = () => document.body.style.backgroundColor = color;
+            grid.appendChild(btn);
+        });
+    </script>
+
+</body>
+
+</html>
