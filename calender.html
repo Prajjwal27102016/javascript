@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today’s Calendar</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at top, #0c1a64, #01010a 80%);
+            color: #e8f7ff;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .today-card {
+            width: min(100%, 480px);
+            padding: 32px;
+            border: 1px solid rgba(12, 243, 255, 0.25);
+            border-radius: 28px;
+            background: rgba(1, 5, 26, 0.95);
+            box-shadow: 0 0 50px rgba(12, 243, 255, 0.18);
+            text-align: center;
+        }
+
+        .title {
+            margin: 0 0 12px;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22rem;
+            text-shadow: 0 0 18px #38f2ff;
+        }
+
+        .date-line {
+            margin: 0;
+            font-size: 1rem;
+            color: #b8f4ff;
+            text-shadow: 0 0 12px rgba(0, 255, 255, 0.35);
+        }
+
+        .calendar-display {
+            margin-top: 26px;
+            padding: 28px 22px;
+            border-radius: 24px;
+            background: rgba(0, 49, 117, 0.25);
+            border: 1px solid rgba(12, 243, 255, 0.18);
+            box-shadow: inset 0 0 28px rgba(0, 255, 255, 0.08);
+            display: inline-block;
+            min-width: 320px;
+        }
+
+        .day-name {
+            margin: 0 0 16px;
+            font-size: 1.2rem;
+            letter-spacing: 0.18rem;
+            color: #d7fbff;
+            text-shadow: 0 0 14px rgba(0, 255, 255, 0.35);
+        }
+
+        .day-number {
+            margin: 0;
+            font-size: 5rem;
+            letter-spacing: 0.08rem;
+            color: #f0ffff;
+            text-shadow: 0 0 28px rgba(0, 255, 255, 0.45);
+        }
+
+        .month-year {
+            margin: 10px 0 0;
+            font-size: 1.2rem;
+            color: #b4ebff;
+            text-shadow: 0 0 12px rgba(0, 255, 255, 0.28);
+        }
+    </style>
+</head>
+<body onload="showToday()">
+    <div class="today-card">
+        <h1 class="title">Today</h1>
+        <p class="date-line" id="currentDate"> today's date</p>
+        <div class="calendar-display">
+            <p class="day-name" id="dayName"></p>
+            <p class="day-number" id="dayNumber"></p>
+            <p class="month-year" id="monthYear"></p>
+        </div>
+    </div>
+
+    <script>
+        function showToday() {
+            var now = new Date();
+            var day = now.getDate();
+            var month = now.getMonth();
+            var year = now.getFullYear();
+
+            var monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var dayName = dayNames[now.getDay()];
+
+            document.getElementById('currentDate').textContent = 'Today: ' + dayName + ', ' + monthNames[month] + ' ' + day + ', ' + year;
+            document.getElementById('dayName').textContent = dayName;
+            document.getElementById('dayNumber').textContent = day;
+            document.getElementById('monthYear').textContent = monthNames[month] + ' ' + year;
+        }
+    </script>
+</body>
+</html>

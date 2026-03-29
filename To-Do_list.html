@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List - Party Mode</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s ease;
+            /* Smooth toggle transition */
+        }
+
+        .dark-mode {
+            background-color: #121212;
+            color: #f0f0f0;
+        }
+
+        /* Rainbow Animation */
+        @keyframes colorCycle {
+            0% {
+                background-color: red;
+                color: white;
+            }
+
+            17% {
+                background-color: orange;
+                color: black;
+            }
+
+            34% {
+                background-color: yellow;
+                color: black;
+            }
+
+            51% {
+                background-color: green;
+                color: white;
+            }
+
+            68% {
+                background-color: blue;
+                color: white;
+            }
+
+            85% {
+                background-color: black;
+                color: white;
+            }
+
+            100% {
+                background-color: red;
+                color: white;
+            }
+        }
+
+        .color-mode {
+            /* 6 seconds total = 1 second per color */
+            animation: colorCycle 6s infinite linear;
+        }
+
+        /* Small styling for buttons */
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="togglecolorMode()">🌈 Toggle Rainbow Mode</button>
+    <button onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+
+    <br><br>
+
+    <form id="myForm">
+        <input id="myInput" type="text" placeholder="Add a task..." />
+        <button type="submit">Add</button>
+    </form>
+
+    <h3>To Do List</h3>
+    <ul id="myItem"></ul>
+
+    <script>
+        const myForm = document.getElementById("myForm");
+        const myInput = document.getElementById("myInput");
+        const myItem = document.getElementById("myItem");
+
+        myForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const trimmedInput = myInput.value.trim();
+            if (trimmedInput === "") {
+                alert("Please enter a non-empty item.");
+                myInput.value = "";
+                myInput.focus();
+                return;
+            }
+            createItem(trimmedInput);
+        });
+
+        function createItem(inputText) {
+            const li = document.createElement("li");
+            li.textContent = inputText + " ";
+
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "Delete";
+            delBtn.style.marginLeft = "10px";
+            delBtn.addEventListener("click", function () {
+                li.remove();
+            });
+
+            li.appendChild(delBtn);
+            myItem.appendChild(li);
+            myInput.value = "";
+            myInput.focus();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Fixed: Function name now matches the button's onclick attribute
+        function togglecolorMode() {
+            document.body.classList.toggle('color-mode');
+        }
+    </script>
+</body>
+
+</html>
