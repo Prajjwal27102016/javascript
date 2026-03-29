@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<h1>Shopping List</h1>
+<form id="myForm">
+    <input id="myInput" type="text" placeholder="Add an item..." />
+    <button type="submit">Add</button>
+</form>
+
+<h3>List</h3>
+<ul id="myItem"></ul>
+
+<script>
+    const myForm = document.getElementById("myForm");
+    const myInput = document.getElementById("myInput");
+    const myItem = document.getElementById("myItem");
+
+    myForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const trimmedInput = myInput.value.trim();
+        if (trimmedInput === "") {
+            alert("Please enter a non-empty item.");
+            myInput.value = "";
+            myInput.focus();
+            return;
+        }
+        createItem(trimmedInput);
+    });
+
+    function createItem(inputText) {
+        const li = document.createElement("li");
+        li.textContent = inputText + " ";
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Delete";
+        delBtn.style.marginLeft = "10px";
+        delBtn.addEventListener("click", function () {
+            li.remove();
+        });
+
+        li.appendChild(delBtn);
+        myItem.appendChild(li);
+        myInput.value = "";
+        myInput.focus();
+    }
+    </script>
+</body>
+</html>
