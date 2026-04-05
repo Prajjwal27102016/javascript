@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+
+<body>
+
+    <p>Enter numbers separated by commas:</p>
+
+    <input type="text" id="numbers">
+
+    <button onclick="showMax()">Find Maximum Number</button>
+
+    <p id="result"></p>
+
+    <script>
+
+        function findMax(nums) {
+
+            var max = nums[0];
+
+            for (var i = 1; i < nums.length; i++) {
+
+                if (nums[i] > max) {
+
+                    max = nums[i];
+
+                }
+
+            }
+
+            return max;
+
+        }
+
+        function showMax() {
+
+            var input = document.getElementById("numbers").value;
+
+            var arr = input.split(",").map(function (x) { return Number(x.trim()); });
+
+            var maxNum = findMax(arr);
+
+            document.getElementById("result").innerHTML = "Maximum number is: " + maxNum;
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Stopwatch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at top, #0c1a64, #01010a 80%);
+            color: #e8f7ff;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .wrapper {
+            width: min(100%, 480px);
+            padding: 32px;
+            border: 1px solid rgba(12, 243, 255, 0.25);
+            border-radius: 28px;
+            background: rgba(1, 5, 26, 0.95);
+            box-shadow: 0 0 50px rgba(12, 243, 255, 0.18);
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 20px;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22rem;
+            text-shadow: 0 0 18px #28f1ff;
+            color: #e8f7ff;
+        }
+
+        p {
+            margin: 20px 0;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f0ffff;
+            text-shadow: 0 0 28px rgba(0, 255, 255, 0.45);
+            letter-spacing: 0.08rem;
+        }
+
+        button {
+            margin: 10px;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 1px solid rgba(12, 243, 255, 0.25);
+            background: rgba(0, 49, 117, 0.25);
+            color: #e8f7ff;
+            text-shadow: 0 0 12px rgba(0, 255, 255, 0.35);
+            box-shadow: 0 0 20px rgba(12, 243, 255, 0.1);
+            transition: all 0.3s ease;
+            font-family: 'Courier New', Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+        }
+
+        button:hover {
+            box-shadow: 0 0 30px rgba(12, 243, 255, 0.3);
+            background: rgba(0, 49, 117, 0.4);
+        }
+
+        button:active {
+            box-shadow: 0 0 15px rgba(12, 243, 255, 0.2);
+        }
+
+        #button-start {
+            border-color: rgba(0, 255, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        #button-start:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        #button-stop {
+            border-color: rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+        }
+
+        #button-stop:hover {
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+        }
+
+        #button-reset {
+            border-color: rgba(255, 165, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.1);
+        }
+
+        #button-reset:hover {
+            box-shadow: 0 0 30px rgba(255, 165, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1>Stopwatch</h1>
+        <p><span id="minutes">00</span>:<span id="seconds">00</span>:<span id="milliseconds">00</span></p>
+        <button id="button-start">Start</button>
+        <button id="button-stop">Stop</button>
+        <button id="button-reset">Reset</button>
+    </div>
+
+
+    <script>
+        window.onload = function () {
+            var minutes = 0;
+            var seconds = 0;
+            var milliseconds = 0;
+            var appendMilliseconds = document.getElementById("milliseconds");
+            var appendSeconds = document.getElementById("seconds");
+            var appendMinutes = document.getElementById("minutes");
+            var buttonStart = document.getElementById('button-start');
+            var buttonStop = document.getElementById('button-stop');
+            var buttonReset = document.getElementById('button-reset');
+            var Interval;
+
+
+            buttonStart.onclick = function () {
+                if (Interval) {  // Only clear if Interval has a value
+                    clearInterval(Interval);
+                }
+                Interval = setInterval(startTimer, 10);
+                console.log(Interval)
+
+            };
+
+
+            buttonStop.onclick = function () {
+                clearInterval(Interval);
+            };
+
+
+            buttonReset.onclick = function () {
+                clearInterval(Interval);
+                milliseconds = 0;
+                seconds = 0;
+                minutes = 0;
+                appendMilliseconds.innerHTML = "00";
+                appendSeconds.innerHTML = "00";
+                appendMinutes.innerHTML = "00";
+            };
+
+
+            function startTimer() {
+                milliseconds++; // increment milliseconds milliseconds= milliseconds + 1
+
+
+                if (milliseconds <= 9) {
+                    appendMilliseconds.innerHTML = "0" + milliseconds;
+                }
+                if (milliseconds > 9) {
+                    appendMilliseconds.innerHTML = milliseconds;
+                }
+                if (milliseconds > 99) {
+                    seconds++; // increment seconds seconds = seconds + 1
+                    milliseconds = 0;
+                    appendMilliseconds.innerHTML = "00";
+
+                    if (seconds <= 9) {
+                        appendSeconds.innerHTML = "0" + seconds;
+                    }
+                    if (seconds > 9) {
+                        appendSeconds.innerHTML = seconds;
+                    }
+                }
+
+                if (seconds > 59) {
+                    minutes++; // increment minutes minutes = minutes + 1
+                    seconds = 0;
+                    appendSeconds.innerHTML = "00";
+
+                    if (minutes <= 9) {
+                        appendMinutes.innerHTML = "0" + minutes;
+                    }
+                    if (minutes > 9) {
+                        appendMinutes.innerHTML = minutes;
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>

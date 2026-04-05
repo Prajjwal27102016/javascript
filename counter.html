@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Counter</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+        }
+
+        button {
+            font-size: 1.2rem;
+            padding: 12px 24px;
+        }
+
+        .decrease {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .reset {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .increase {
+            background-color: #2ecc71;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Counter</h2>
+        <h1 id="value">0</h1>
+        <div class="buttons">
+            <button class="decrease" onclick="decrease()">Decrease</button>
+            <button class="reset" onclick="resetValue()">Reset</button>
+            <button class="increase" onclick="increase()">Increase</button>
+        </div>
+    </div>
+
+    <script>
+        let count = 0;
+        const valueDisplay = document.getElementById('value');
+
+        function changeValue(num) {
+            count += num;
+            updatedisplay();
+        }
+
+        function resetValue() {
+            count = 0;
+            updatedisplay();
+        }
+
+        function decrease() {
+            changeValue(-1);
+        }
+
+        function increase() {
+            changeValue(1);
+        }
+
+        function updatedisplay() {
+            valueDisplay.textContent = count;
+
+            if (count > 0) {
+                valueDisplay.style.color = "#2ecc71";
+            } else if (count < 0) {
+                valueDisplay.style.color = "#e74c3c";
+            } else {
+                valueDisplay.style.color = "#222";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

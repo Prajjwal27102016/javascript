@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Helvetica, sans-serif;
+            margin-top: 50px;
+            /* Just to give some space from the top */
+            background-color: #f8f8f8;
+            /* Light background */
+        }
+
+        #dice {
+            font-size: 320px;
+            /* Optional: Add a border or background to make the dice area clear */
+            border: 2px solid #ccc;
+            display: inline-block;
+            /* Helps with sizing and centering */
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            /* White background for the dice */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow */
+            transition: background-color 0.3s ease;
+            /* Smooth transition on hover */
+            cursor: pointer;
+            /* Indicate it's clickable */
+            user-select: none;
+            /* Prevent text selection */
+            -webkit-user-select: none;
+            /* For Webkit browsers */
+            -moz-user-select: none;
+            /* For Mozilla Firefox */
+            -ms-user-select: none;
+            /* For Internet Explorer/Edge */
+        }
+
+        #dice:hover {
+            background-color: #e0e0e0;
+            /* Visual feedback on hover */
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="dice" onclick="stopstart()">
+        &#x2680; </div>
+
+
+    <script>
+        // Use 'const' for variables that don't change, 'let' for those that do
+        const diceElement = document.getElementById("dice"); // Renamed for clarity
+        // Array of die face emojis (using HTML entities for display)
+        const dices = ['&#9856;', '&#9857;', '&#9858;', '&#9859;', '&#9860;', '&#9861;']; //dices[0]
+        let timerId; // Stores the ID returned by setInterval
+        let isRolling = false; // State variable to track if the dice is currently rolling
+
+
+        // Function to change the dice emoji randomly
+        function changeDiceFace() {
+            const random = Math.floor(Math.random() * dices.length); // Get a random index
+            diceElement.innerHTML = dices[random]; // Update the inner HTML of the dice div
+        }
+
+
+        // Function to toggle rolling/stopping the dice
+        function stopstart() {
+            if (!isRolling) { // If it's currently NOT rolling (i.e., stopped)
+                isRolling = true;
+                // Start changing the dice emoji every 0.1 seconds (100ms)
+                timerId = setInterval(changeDiceFace, 100);
+                console.log(timerId)
+            } else { // If it's currently rolling
+                clearInterval(timerId); // Stop the interval
+                isRolling = false;
+            }
+        }
+
+
+
+    </script>
+
+
+</body>
+
+</html>
