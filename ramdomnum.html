@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number App</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #number-display {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            min-width: 150px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            color: white;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #status {
+            margin-top: 15px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="number-display">0</div>
+        <button id="toggle-btn" onclick="toggleGeneration()">Click to Stop/Start</button>
+        <p id="status">Status: Running</p>
+    </div>
+
+    <script>
+        const display = document.getElementById('number-display');
+        const statusText = document.getElementById('status');
+
+        let intervalId = null;
+        let clickCount = 0;
+
+        function startGeneration() {
+            if (!intervalId) {
+                intervalId = setInterval(() => {
+                    display.textContent = Math.floor(Math.random() * 100);
+                }, 50);
+                statusText.textContent = "Status: Running";
+            }
+        }
+
+        function stopGeneration() {
+            clearInterval(intervalId);
+            intervalId = null;
+            statusText.textContent = "Status: Stopped (Odd Click)";
+        }
+
+        function toggleGeneration() {
+            clickCount++;
+
+            if (clickCount % 2 !== 0) {
+                stopGeneration();
+            }
+            else {
+                startGeneration();
+                statusText.textContent = "Status: Running (Even Click)";
+            }
+        }
+
+        startGeneration();
+    </script>
+</body>
+
+</html>
